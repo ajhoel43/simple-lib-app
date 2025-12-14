@@ -36,6 +36,7 @@ describe("BookService", () => {
 		// bookService.postBorrowBook(book.id, 30);
 
 		const result = bookService.postBorrowBook(book.id, 20);
+		// Result should be false, because book[0] is still borrowed by 40
 		expect(result).toBe(false);
 		expect(book.borrowedBy).toBe(40);
 	});
@@ -48,5 +49,20 @@ describe("BookService", () => {
 
 		expect(result).toBe(true);
 		expect(book.isBorrowed).toBe(false);
+	});
+
+	it("Display All Books", () => {
+		bookRepo.books = [...books];
+
+		const result = bookService.getAllBooks();
+		expect(result).toEqual([...books]);
+	});
+
+	it("Display Borrowed Books", () => {
+		bookRepo.books = [...books];
+		books[2].borrowBook(40);
+
+		const result = bookService.getBorrowedBooks(40);
+		expect(result).toEqual([books[2]]);
 	});
 });
